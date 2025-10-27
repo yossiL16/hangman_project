@@ -1,4 +1,4 @@
-from game import *
+from game import is_won, is_lost
 
 
 def prompt_guess() -> str:
@@ -13,10 +13,13 @@ def print_status(state: dict) -> None:
           f"you guess: {state["guessed"]},"
           f"The number of guesses remaining is: {state["max_tries"] - state["worng_gusses"]}")
 
+    return
+
 def  print_result(state: dict) -> None:
 
-
-    if is_won() == True:
+    if is_won(state) == True:
         print("you win!!!!!!")
-    else:
-        print("you lose.")
+        print_status(state)
+    elif is_lost(state) == True:
+        print("you lose")
+        print_status(state)

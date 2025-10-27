@@ -3,8 +3,7 @@ import random
 
 def choose_secret_word(words: list[str]) -> str:
 
-    word = random.choice(words)
-    return word
+    return random.choice(words)
 
 
 def init_state(secret: str, max_tries: int) -> dict:
@@ -16,6 +15,8 @@ def init_state(secret: str, max_tries: int) -> dict:
         "worng_gusses": 0,
         "max_tries" : max_tries
     }
+    for i in range(len(state["secret"])):
+        state["display"].append("_")
 
     return state
 
@@ -41,10 +42,17 @@ def validate_guess(ch: str, guessed: set[str]) -> tuple[bool, str]:
 
 def apply_guess(state: dict, ch: str) -> bool:
 
-    if ch in state["secret"]:
+    for i in range(len(state["secret"])):
+        if ch == i:
+            state["display"][i] = ch
+            print("good")
+        else:
+            state["worng_gusses"] += 1
+            print("try agane")
+            return False
         return True
-    else:
-        return False
+
+
 
 
 def is_won(state: dict) -> bool:
@@ -62,7 +70,7 @@ def is_lost(state: dict) -> bool:
 
 
 def render_display(state: dict) -> str:
-    return str(state)
+    return str(state["display"])
 
 
 
