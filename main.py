@@ -1,5 +1,5 @@
 from game import choose_secret_word, init_state, render_display, validate_guess, apply_guess, render_summary
-from io import print_status, prompt_guess, print_result
+from ioio import prompt_guess, print_status, print_result
 
 
 def play(words: list[str], max_tries: int = 6) -> None:
@@ -8,6 +8,7 @@ def play(words: list[str], max_tries: int = 6) -> None:
 
     init_dicti = init_state(secret_word, max_tries)
     print_status(init_dicti)
+
     while True:
         render_display(init_dicti)
         latter = prompt_guess()
@@ -46,7 +47,9 @@ word =[
 ,"סוכר", "מלח", "פלפל", "בצל", "שום", "קמח", "אורז", "מרק", "חלב", "עוף"
 ,"אוניה", "רכב", "אופנוע", "מסוק", "מטען", "נמל", "תחנה", "כביש", "מחלף", "מנהרה"
 "בית", "בניין", "מדרגות", "קומה", "גג", "חדר", "מטבח", "אמבטיה", "שירותים", "סלון"]
-play(word)
+
+if __name__ == "__main__":
+    play(word)
 
 
 

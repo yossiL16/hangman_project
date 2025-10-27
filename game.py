@@ -1,4 +1,5 @@
 import random
+from operator import index
 
 
 def choose_secret_word(words: list[str]) -> str:
@@ -7,77 +8,50 @@ def choose_secret_word(words: list[str]) -> str:
 
 
 def init_state(secret: str, max_tries: int) -> dict:
-
-    state = {
+    for i in range(len(secret) + 1):
+        display = ['_' for _ in secret]
+    return  {
         "secret" : secret,
-        "display" : [],
-        "guessed" : {} ,
+        "display" : display,
+        "guessed" : set[str] ,
         "worng_gusses": 0,
         "max_tries" : max_tries
     }
-    for i in range(len(state["secret"])):
-        state["display"].append("_")
 
-    return state
 
 def validate_guess(ch: str, guessed: set[str]) -> tuple[bool, str]:
-
-    x=[]
-    if len(ch) > 1:
-        x.append(False)
-        x.append("only one latter")
-        return tuple(x)
-
-    elif ch in guessed:
-        x.append(False)
-        x.append("You have already chosen this letter, please choose another one.")
-        return tuple(x)
-
-    else:
-        guessed.add(ch)
-        x.append(True)
-        x.append("good")
-        return tuple(x)
-
+    if not ch or len(ch) != 1:
+        return False, "Please enter one letter only."
+    if ch in guessed:
+        return False, "you alreay guessed that letter"
+    return True, ""
 
 def apply_guess(state: dict, ch: str) -> bool:
 
-    for i in range(len(state["secret"])):
-        if ch == i:
+    secred = state["secret"]
+    mathed = False
+    state["gussed"].add(ch)
+    for i, v in enumerate(secred):
+        if v == ch:
             state["display"][i] = ch
-            print("good")
-        else:
-            state["worng_gusses"] += 1
-            print("try agane")
-            return False
-        return True
+            matched = True
+        if not matched:
+            state["wrong_guesses"] += 1
+        return mathed
 
 
+def is_won(state) -> bool:
+    return '_' not in state["display"]
 
 
-def is_won(state: dict) -> bool:
-
-    if state["secret"] == state["dispaly"]:
-
-        return True
-
-
-def is_lost(state: dict) -> bool:
-
-    if len(state["worng_gusses"]) >= state["max_tries"]:
-        return True
-
-
+def is_lost(state) -> bool:
+    return state["wrong_guesses"] >= state["max_tries"]
 
 def render_display(state: dict) -> str:
-    return str(state["display"])
-
-
+    return ' '.join(state["display"])
 
 def render_summary(state: dict) -> str:
-
-    print(f"the secret word is: {state["secret"]}, "
-          f"and all latters you guessed: {state["guessed"]},")
+    return f"Secret: {state['secret']} | Guessed: {sorted(list(state['guessed']))} | Wrong: {state['wrong_guesses']}/{state['max_tries']}"
 
 
 
